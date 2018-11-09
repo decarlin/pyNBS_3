@@ -9,11 +9,11 @@ from setuptools import setup, find_packages
 
 setup(
 	name='pyNBS',
-	version='0.2.0',
+	version='1.0.0',
 	description='Python package to perform network based stratification of binary somatic mutations as described in Hofree et al 2013.',
-	url='https://github.com/huangger/pyNBS',
-	author='Justin Huang',
-	author_email='jkh013@ucsd.edu',
+	url='https://github.com/huangger/pyNBS_3',
+	author='Daniel Carlin',
+	author_email='carlin.daniel@gmail.com',
 	license='MIT',
 	classifiers=[
 		'Development Status :: 4 - Beta',
