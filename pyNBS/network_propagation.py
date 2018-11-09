@@ -42,7 +42,7 @@ def network_propagation(network, binary_matrix, alpha=0.7, symmetric_norm=False,
     # Begin network propagation
     starttime=time.time()
     if verbose:
-        print 'Performing network propagation with alpha:', alpha
+        print('Performing network propagation with alpha:', alpha)
     # Separate network into connected components and calculate propagation values of each sub-sample on each connected component
     subgraphs = list(nx.connected_component_subgraphs(network))
     # Initialize propagation results by propagating first subgraph
@@ -76,11 +76,11 @@ def network_propagation(network, binary_matrix, alpha=0.7, symmetric_norm=False,
                 save_path = save_args['outdir']+'prop.csv'
         prop_data_df.to_csv(save_path)
         if verbose:
-        	print 'Network Propagation Result Saved:', save_path
+        	print('Network Propagation Result Saved:', save_path)
     else:
         pass
     if verbose:
-        print 'Network Propagation Complete:', time.time()-starttime, 'seconds'                
+        print('Network Propagation Complete:', time.time()-starttime, 'seconds')                
     return prop_data_df
 
 # Wrapper for propagating binary mutation matrix over network by subgraph given network propagation kernel
@@ -89,7 +89,7 @@ def network_propagation(network, binary_matrix, alpha=0.7, symmetric_norm=False,
 def network_kernel_propagation(network, network_kernel, binary_matrix, verbose=False, **save_args):
     starttime=time.time()
     if verbose:
-        print 'Performing network propagation with network kernel'
+        print('Performing network propagation with network kernel')
     # Separate network into connected components and calculate propagation values of each sub-sample on each connected component
     subgraph_nodelists = list(nx.connected_components(network))
     # Initialize propagation results by propagating first subgraph
@@ -121,5 +121,5 @@ def network_kernel_propagation(network, network_kernel, binary_matrix, verbose=F
     else:
         pass
     if verbose:
-        print 'Network Propagation Complete:', time.time()-starttime, 'seconds'                
+        print('Network Propagation Complete:', time.time()-starttime, 'seconds')                
     return prop_data_df

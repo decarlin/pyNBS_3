@@ -118,53 +118,53 @@ if __name__ == "__main__":
     save_args = {'outdir':params['outdir'], 'job_name':params['job_name']}
     
     # Begin pyNBS
-    print
-    print '##################################################################################'
-    print '# Beginning pyNBS Run:', params['job_name']
-    print '##################################################################################'
-    print 'Results ouput directory:', save_args['outdir']
-    print
-    print '##################################################################################'
-    print '# Loading binary somatic mutation data'
-    print '##################################################################################'
+    print()
+    print('##################################################################################')
+    print('# Beginning pyNBS Run:', params['job_name'])
+    print('##################################################################################')
+    print('Results ouput directory:', save_args['outdir'])
+    print()
+    print('##################################################################################')
+    print('# Loading binary somatic mutation data')
+    print('##################################################################################')
     if verbose:
-        print 'Binary somatic mutation data file type:', params['mut_filetype']
-        print 'Binary somatic mutation data file delimiter:', repr(params['mut_filedelim'])
+        print('Binary somatic mutation data file type:', params['mut_filetype'])
+        print('Binary somatic mutation data file delimiter:', repr(params['mut_filedelim']))
     sm_mat = dit.load_binary_mutation_data(args.sm_data_file, filetype=params['mut_filetype'], delimiter=params['mut_filedelim'], verbose=verbose)
-    print
-    print '##################################################################################'
-    print '# Loading network from file'
-    print '##################################################################################'
+    print()
+    print('##################################################################################')
+    print('# Loading network from file')
+    print('##################################################################################')
     if verbose:
-        print 'Network file delimiter:', repr(params['net_filedelim'])
-        print 'Degree-preserved shuffle of network:', params['degree_preserved_shuffle']
-        print 'Node label shuffle of network:', params['node_label_shuffle']
+        print('Network file delimiter:', repr(params['net_filedelim']))
+        print('Degree-preserved shuffle of network:', params['degree_preserved_shuffle'])
+        print('Node label shuffle of network:', params['node_label_shuffle'])
     network = dit.load_network_file(args.network_file, delimiter=params['net_filedelim'], 
         degree_shuffle=params['degree_preserved_shuffle'], label_shuffle=params['node_label_shuffle'], verbose=verbose)
-    print
-    print '##################################################################################'
-    print '# Construct regularization network graph laplacian for network-regularized NMF'
-    print '##################################################################################'
+    print()
+    print('##################################################################################')
+    print('# Construct regularization network graph laplacian for network-regularized NMF')
+    print('##################################################################################')
     if verbose:
-        print 'Input network laplacian diagonal offset (gamma):', params['reg_net_gamma']
-        print 'Number of nearest neighbors to connect each network node to for regularization network:', params['k_nearest_neighbors']
-        print 'Save regularization network graph laplacian:', params['save_knn_glap']
+        print('Input network laplacian diagonal offset (gamma):', params['reg_net_gamma'])
+        print('Number of nearest neighbors to connect each network node to for regularization network:', params['k_nearest_neighbors'])
+        print('Save regularization network graph laplacian:', params['save_knn_glap'])
         if params['save_knn_glap']:
-            print save_args['outdir']+str(save_args['job_name'])+'_knnGlap.csv'
+            print(save_args['outdir']+str(save_args['job_name'])+'_knnGlap.csv')
     if params['save_knn_glap']:
         knnGlap = core.network_inf_KNN_glap(network, gamma=params['reg_net_gamma'], kn=params['k_nearest_neighbors'], verbose=verbose, **save_args)
     else:
         knnGlap = core.network_inf_KNN_glap(network, gamma=params['reg_net_gamma'], kn=params['k_nearest_neighbors'], verbose=verbose)
-    print
-    print '##################################################################################'
-    print '# Construct network propagation kernel'
-    print '##################################################################################'
+    print()
+    print('##################################################################################')
+    print('# Construct network propagation kernel')
+    print('##################################################################################')
     if verbose:
-        print 'Network propagation coefficient (alpha):', params['prop_alpha']
-        print 'Symmetric adjacency matrix normalization for propagation:', params['prop_symmetric_norm']
-        print 'Save network propagation kernel:', params['save_kernel']
+        print('Network propagation coefficient (alpha):', params['prop_alpha'])
+        print('Symmetric adjacency matrix normalization for propagation:', params['prop_symmetric_norm'])
+        print('Save network propagation kernel:', params['save_kernel'])
         if params['save_kernel']:
-            print save_args['outdir']+str(save_args['job_name'])+'_prop_kernel.csv'
+            print(save_args['outdir']+str(save_args['job_name'])+'_prop_kernel.csv')
     # Calculate propagation kernel by propagating identity matrix of network
     network_nodes = network.nodes()
     network_I = pd.DataFrame(np.identity(len(network_nodes)), index=network_nodes, columns=network_nodes)
@@ -173,31 +173,31 @@ if __name__ == "__main__":
         kernel = prop.network_propagation(network, network_I, alpha=params['prop_alpha'], symmetric_norm=params['prop_symmetric_norm'], verbose=verbose, **save_args)  
     else:
         kernel = prop.network_propagation(network, network_I, alpha=params['prop_alpha'], symmetric_norm=params['prop_symmetric_norm'], verbose=verbose)  
-    print
-    print '##################################################################################'
-    print '# Performing', params['niter'], 'iterations of pyNBS'
-    print '##################################################################################'
+    print()
+    print('##################################################################################')
+    print('# Performing', params['niter'], 'iterations of pyNBS')
+    print('##################################################################################')
     if verbose:
-        print 'Overall number of pyNBS iterations:', params['niter']
-        print '*** Subsampling parameters ***'
-        print 'Patient subsample rate:', params['pats_subsample_p']
-        print 'Network gene subsample rate:', params['gene_subsample_p']
-        print 'Minimum number of mutations allowed per subsampled patient:', params['min_muts']
-        print '*** Propagation data parameters ***'
-        print 'Save propagated, subsampled data (at each intermediate step):', params['save_prop']
-        print 'Perform quantile normalization on propagated data:', params['qnorm_data']
-        print '*** Network-regularized NMF (netNMF) parameters ***'
-        print 'Number of clusters:', params['netNMF_k']
-        print 'Network-regularization coefficient (netNMF lambda):', params['netNMF_lambda']
-        print 'Maximum number of multiplicative updates to perform in netNMF:', params['netNMF_maxiter']
-        print 'Maximum machine precision value:', params['netNMF_eps']
-        print 'Maximum netNMF reconstruction error for convergence:', params['netNMF_err_tol']
-        print 'Maximum change per multiplicative update step allowed in reconstruction error for convergence:', params['netNMF_err_delta_tol']
-        print 'Save individual H matrices to file', params['save_H']
+        print('Overall number of pyNBS iterations:', params['niter'])
+        print('*** Subsampling parameters ***')
+        print('Patient subsample rate:', params['pats_subsample_p'])
+        print('Network gene subsample rate:', params['gene_subsample_p'])
+        print('Minimum number of mutations allowed per subsampled patient:', params['min_muts'])
+        print('*** Propagation data parameters ***')
+        print('Save propagated, subsampled data (at each intermediate step):', params['save_prop'])
+        print('Perform quantile normalization on propagated data:', params['qnorm_data'])
+        print('*** Network-regularized NMF (netNMF) parameters ***')
+        print('Number of clusters:', params['netNMF_k'])
+        print('Network-regularization coefficient (netNMF lambda):', params['netNMF_lambda'])
+        print('Maximum number of multiplicative updates to perform in netNMF:', params['netNMF_maxiter'])
+        print('Maximum machine precision value:', params['netNMF_eps'])
+        print('Maximum netNMF reconstruction error for convergence:', params['netNMF_err_tol'])
+        print('Maximum change per multiplicative update step allowed in reconstruction error for convergence:', params['netNMF_err_delta_tol'])
+        print('Save individual H matrices to file', params['save_H'])
     # Turn off internal pyNBS reporting steps
     params['verbose']=False
     # Initialize and construct Hlist
-    print
+    print()
     Hlist = []
     if (params['save_prop']==False) and (params['save_H']==False):
         del params['outdir']
@@ -211,22 +211,22 @@ if __name__ == "__main__":
         # Hlist.append(pyNBS_single.NBS_single(sm_mat, knnGlap, propNet=network, k=params['netNMF_k'], **params))
         # Report run time of each pyNBS iteration
         t = time.time()-netNMF_time
-        print 'NBS iteration:', i+1, 'complete:', t, 'seconds'
-    print
-    print '##################################################################################'
-    print '# Performing Consensus Clustering'
-    print '##################################################################################'
+        print('NBS iteration:', i+1, 'complete:', t, 'seconds')
+    print()
+    print('##################################################################################')
+    print('# Performing Consensus Clustering')
+    print('##################################################################################')
     if verbose:
-        print 'Number of consensus clusters:', params['netNMF_k']
-        print 'Consensus hierarchical clustering linkage method', params['hclust_linkage_method']
-        print 'Consensus hierarchical clustering linkage metric', params['hclust_linkage_metric']
-        print 'Save consensus clustering results', params['save_cc_results']
+        print('Number of consensus clusters:', params['netNMF_k'])
+        print('Consensus hierarchical clustering linkage method', params['hclust_linkage_method'])
+        print('Consensus hierarchical clustering linkage metric', params['hclust_linkage_metric'])
+        print('Save consensus clustering results', params['save_cc_results'])
         if params['save_cc_results']:
-            print save_args['outdir']+str(save_args['job_name'])+'_cc_matrix.csv'
-            print save_args['outdir']+str(save_args['job_name'])+'_cluster_assignments.csv' 
-        print 'Save patient co-clustering map', params['save_cc_map']
+            print(save_args['outdir']+str(save_args['job_name'])+'_cc_matrix.csv')
+            print(save_args['outdir']+str(save_args['job_name'])+'_cluster_assignments.csv') 
+        print('Save patient co-clustering map', params['save_cc_map'])
         if params['save_cc_map']:
-            print save_args['outdir']+str(save_args['job_name'])+'_cc_map.png'
+            print(save_args['outdir']+str(save_args['job_name'])+'_cc_map.png')
     # Perform consensus clustering
     if params['save_cc_results']:
         NBS_cc_table, NBS_cc_linkage, NBS_cluster_assign = cc.consensus_hclust_hard(Hlist, k=params['netNMF_k'], 
@@ -241,21 +241,21 @@ if __name__ == "__main__":
 
     # The following section only executes if patient survival data is provided
     if params['plot_survival']:
-        print
-        print '##################################################################################'
-        print '# Performing Survival Analysis'
-        print '##################################################################################'
+        print()
+        print('##################################################################################')
+        print('# Performing Survival Analysis')
+        print('##################################################################################')
         if verbose:
-            print 'Survival data file delimiter:', repr(params['surv_file_delim'])
-            print 'Perform survival log-rank test:', params['surv_lr_test']
-            print 'Maximum time considered in survival analysis (days):', params['surv_tmax']
-            print 'Kaplan Meier Plot:'
-            print save_args['outdir']+str(save_args['job_name'])+'_KM_plot.png'              
+            print('Survival data file delimiter:', repr(params['surv_file_delim']))
+            print('Perform survival log-rank test:', params['surv_lr_test'])
+            print('Maximum time considered in survival analysis (days):', params['surv_tmax'])
+            print('Kaplan Meier Plot:')
+            print(save_args['outdir']+str(save_args['job_name'])+'_KM_plot.png')              
         # Perform survival analysis via KM plot
         plot.cluster_KMplot(NBS_cluster_assign, args.survival_data, delimiter=params['surv_file_delim'], 
             lr_test=params['surv_lr_test'], tmax=params['surv_tmax'], **save_args)
     else:         
-        print
-        print '##################################################################################'
-        print '# No Survival Analysis Performed'
-        print '##################################################################################'
+        print()
+        print('##################################################################################')
+        print('# No Survival Analysis Performed')
+        print('##################################################################################')
